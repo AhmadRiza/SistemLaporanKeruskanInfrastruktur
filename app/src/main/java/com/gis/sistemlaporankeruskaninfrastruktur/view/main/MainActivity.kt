@@ -1,13 +1,14 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.view.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import com.gis.sistemlaporankeruskaninfrastruktur.R
 import com.gis.sistemlaporankeruskaninfrastruktur.view.main.views.HomeFragment
+import com.gis.sistemlaporankeruskaninfrastruktur.view.main.views.UserFragment
 import kotlinx.android.synthetic.main.activity_beranda.*
 
 class MainActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedListener {
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedListen
     private fun setUpNav() {
 
         fragmets.add(HomeFragment())
+        fragmets.add(UserFragment())
 
         ah_nav?.apply {
             addItem(AHBottomNavigationItem("Beranda", R.drawable.ic_home))

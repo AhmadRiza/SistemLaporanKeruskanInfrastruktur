@@ -11,12 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class EndlessScrollListener(
     private val lm: LinearLayoutManager,
     private val threshold: Int
-//    , private val callback: OnPaginationScrollListener
 ) : RecyclerView.OnScrollListener() {
 
     private var totalItemCount: Int = 0
     private var lastVisibleItem: Int = 0
-
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         totalItemCount = lm.itemCount
@@ -25,10 +23,6 @@ abstract class EndlessScrollListener(
             onLoadMore()
         }
     }
-
-//    interface OnPaginationScrollListener {
-//        fun onLoadMore()
-//    }
 
     abstract fun onLoadMore()
 }

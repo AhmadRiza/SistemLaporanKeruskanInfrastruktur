@@ -12,7 +12,7 @@ object AppApiClient {
     private val client = OkHttpClient.Builder().apply { if (BuildConfig.DEBUG) addInterceptor(log) }
 
     private val retrofitApp = Retrofit.Builder()
-            .baseUrl("http://localhost:8080/")
+        .baseUrl("https://sipki.projectpuspa.com/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .client(client.build())
             .build()
