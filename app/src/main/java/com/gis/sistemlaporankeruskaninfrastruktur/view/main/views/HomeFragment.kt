@@ -17,6 +17,8 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
 import com.gis.sistemlaporankeruskaninfrastruktur.support.adapter.Adapter
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.Router
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.gone
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.visible
 import com.gis.sistemlaporankeruskaninfrastruktur.view.main.viewholder.PostVH
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -80,6 +82,11 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
             Router.toUpload(activity)
         }
 
+        swipe_refresh?.setOnRefreshListener {
+            refreshList()
+            swipe_refresh.isRefreshing = false
+        }
+
         refreshList()
 
     }
@@ -114,6 +121,12 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
     override fun showLoading(status: Boolean) {
         activity?.runOnUiThread {
             isLoading = status
+            if (status) {
+                loading?.visible()
+            } else {
+                loading?.gone()
+            }
+
         }
     }
 

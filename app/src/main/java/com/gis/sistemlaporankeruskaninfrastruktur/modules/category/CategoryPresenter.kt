@@ -1,4 +1,4 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.modules.post
+package com.gis.sistemlaporankeruskaninfrastruktur.modules.category
 
 import android.content.Context
 import com.gis.sistemlaporankeruskaninfrastruktur.api.AppApiClient
@@ -6,65 +6,34 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.AppSession
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.File
+import okhttp3.FormBody
 import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState as network
 
 /**
  * Created by riza@deliv.co.id on 8/4/19.
  */
 
-class PostPresenter(
+class CategoryPresenter(
     private val context: Context,
     private val view: ViewNetworkState
-) : IPostPresenter {
+) : ICategoryPresenter {
 
-
-    private val interactor by lazy { PostInteractor(AppApiClient.mainClient()) }
+    private val interactor by lazy { CategoryInteractor(AppApiClient.mainClient()) }
     private val token by lazy { AppSession(context).getToken() }
 
 
-    override fun newPost(
-        lat: String,
-        lon: String,
-        location: String,
-        categoryId: String,
-        caption: String,
-        image: File
-    ) {
-
+    override fun getCategories() {
         view.networkState = network.ShowLoading(true)
 
         GlobalScope.launch {
-            val response = interactor.newPost(
-                token.toString(), lat, lon, location, categoryId, caption, image
-            )
+            val response = interactor.getCategories()
 
             (view.networkState !is network.Destroy).apply {
                 view.networkState = network.ShowLoading(false)
                 when (response.first) {
                     true -> {
                         val data = response.second.toString()
-                        view.networkState = network.ResponseSuccess(Pair("new_post", data))
-                    }
-                    false -> view.networkState = network.ResponseFailure(response.second)
-                }
-            }
-        }
-
-    }
-
-    override fun likePost(idPost: String) {
-        view.networkState = network.ShowLoading(true)
-
-        GlobalScope.launch {
-            val response = interactor.likePost(token.toString(), idPost)
-
-            (view.networkState !is network.Destroy).apply {
-                view.networkState = network.ShowLoading(false)
-                when (response.first) {
-                    true -> {
-                        val data = response.second.toString()
-                        view.networkState = network.ResponseSuccess(Pair("like_post", data))
+                        view.networkState = network.ResponseSuccess(Pair("get_category", data))
                     }
                     false -> view.networkState = network.ResponseFailure(response.second)
                 }
@@ -72,23 +41,26 @@ class PostPresenter(
         }
     }
 
-    override fun getPost(page: Int) {
+    override fun addCategory(name: String) {
         view.networkState = network.ShowLoading(true)
 
+        val body = FormBody.Builder().add("nama", name).build()
+
         GlobalScope.launch {
-            val response = interactor.getPost(token.toString(), page)
+            val response = interactor.addCategory(token.toString(), body)
 
             (view.networkState !is network.Destroy).apply {
                 view.networkState = network.ShowLoading(false)
                 when (response.first) {
                     true -> {
                         val data = response.second.toString()
-                        view.networkState = network.ResponseSuccess(Pair("get_post", data))
+                        view.networkState = network.ResponseSuccess(Pair("add_category", data))
                     }
                     false -> view.networkState = network.ResponseFailure(response.second)
                 }
             }
         }
     }
+
 
 }

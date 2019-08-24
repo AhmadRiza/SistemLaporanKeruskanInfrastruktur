@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -44,9 +47,10 @@
                             android:layout_width="36dp"
                             android:layout_height="36dp"/>
                     <TextView
+                            android:textColor="@color/colorText"
                             android:id="@+id/txt_location"
                             android:textSize="16sp"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="16dp"
                             android:text="Tambahkan Lokasi Anda"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -66,36 +70,78 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <ImageView
-                        android:id="@+id/img_report"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                <LinearLayout
-                        android:id="@+id/v_instruct_img"
-                        android:gravity="center"
-                        android:orientation="vertical"
+                <FrameLayout
+                        android:background="@android:color/black"
                         android:layout_width="match_parent"
                         android:layout_height="150dp">
 
                     <ImageView
-                            android:src="@drawable/ic_add_black_24dp"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"/>
-                    <TextView
-                            android:layout_marginTop="16dp"
-                            android:textSize="16sp"
-                            android:layout_marginStart="8dp"
-                            android:text="Tambahkan Foto Untuk Dilaporkan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:alpha="0.8"
+                            android:scaleType="centerCrop"
+                            tools:src="@drawable/asset_dummy"
+                            android:id="@+id/img_report"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:background="@android:color/white"
+                            android:id="@+id/v_instruct_add"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp">
+
+                        <ImageView
+                                android:src="@drawable/ic_add_black_24dp"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp" />
+
+                        <TextView
+                                android:layout_marginTop="16dp"
+                                android:textSize="16sp"
+                                android:text="Tambahkan Foto Untuk Dilaporkan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
 
 
-                </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/v_instruct_change"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp">
+
+                        <ImageView
+                                android:src="@drawable/ic_camera_alt_black_24dp"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp" />
+
+                        <TextView
+                                android:textColor="@android:color/white"
+                                android:layout_marginTop="16dp"
+                                android:textSize="16sp"
+                                android:text="Ganti foto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                </FrameLayout>
 
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_category"
                     app:cardUseCompatPadding="true"
                     app:cardCornerRadius="16dp"
                     android:layout_marginTop="8dp"
@@ -118,6 +164,8 @@
                         android:layout_height="wrap_content">
 
                     <TextView
+                            android:textColor="@color/colorText"
+                            android:id="@+id/tv_category"
                             android:layout_weight="1"
                             android:textSize="16sp"
                             android:text="Pilih Kategori"
@@ -141,8 +189,10 @@
                     android:layout_height="wrap_content"
             >
                 <EditText
+                        android:id="@+id/et_caption"
+                        android:textColor="@color/colorText"
                         android:background="@android:color/transparent"
-                        android:lines="4"
+                        android:minLines="4"
                         android:gravity="top"
                         android:hint="Tulis Laporan Anda..."
                         android:layout_width="match_parent"
@@ -151,18 +201,32 @@
                 />
             </androidx.cardview.widget.CardView>
 
-            <Button
-                    android:id="@+id/btn_daftar"
-                    android:textColor="@android:color/white"
-                    android:minHeight="50dp"
-                    android:padding="12dp"
+            <FrameLayout
                     android:layout_marginTop="32dp"
-                    android:text="Laporkan"
-                    android:textSize="16sp"
                     android:layout_width="match_parent"
-                    android:background="@drawable/shape_btn"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
 
+
+                <ProgressBar
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:id="@+id/loading"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                <Button
+                        android:id="@+id/btn_submit"
+                        android:textColor="@android:color/white"
+                        android:minHeight="50dp"
+                        android:padding="12dp"
+                        android:text="Laporkan"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/shape_btn"
+                        android:layout_height="wrap_content" />
+
+
+            </FrameLayout>
 
         </LinearLayout>
 

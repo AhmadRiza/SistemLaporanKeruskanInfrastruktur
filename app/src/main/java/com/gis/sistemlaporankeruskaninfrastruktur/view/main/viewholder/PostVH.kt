@@ -23,7 +23,7 @@ class PostVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 tv_user_name?.text = post.user.name
                 tv_location?.text = post.location
                 tv_caption?.text = post.caption
-                tv_category?.text = post.category.name
+                tv_category?.text = "#${post.category.name}"
                 img_post?.apply {
                     Glide.with(context)
                         .load(post.img)
@@ -41,6 +41,7 @@ class PostVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 } else {
                     btn_like?.setOnClickListener {
                         btn_like?.setImageResource(R.drawable.ic_like_blue)
+                        tv_like.text = "${post.likeCount + 1} orang menyukai ini."
                         listener.onLike(post.id)
                     }
                 }
