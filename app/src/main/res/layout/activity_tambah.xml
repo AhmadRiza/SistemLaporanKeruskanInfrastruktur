@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+    >
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_maps"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="16dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:gravity="center_vertical"
+                        android:background="@android:color/white"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:padding="8dp"
+                            android:src="@drawable/ic_add_location_black_24dp"
+                            android:background="@drawable/shape_photo"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"/>
+                    <TextView
+                            android:id="@+id/txt_location"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:text="Tambahkan Lokasi Anda"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_upload"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="16dp"
+                    android:layout_marginTop="4dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:background="#FFFF"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
+
+                    <ImageView
+                            android:src="@drawable/ic_add_black_24dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"/>
+                    <TextView
+                            android:layout_marginTop="16dp"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:text="Tambahkan Foto Untuk Dilaporkan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="16dp"
+                    android:layout_marginTop="8dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            >
+
+                <LinearLayout
+                        android:gravity="center_vertical"
+                        android:background="@android:color/white"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="8dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_weight="1"
+                            android:textSize="16sp"
+                            android:text="Pilih Kategori"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+                    <ImageView
+                            android:src="@drawable/ic_arrow_drop_down_black_24dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"/>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginTop="4dp"
+                    app:contentPadding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            >
+                <EditText
+                        android:background="@android:color/transparent"
+                        android:lines="4"
+                        android:gravity="top"
+                        android:hint="Tulis Laporan Anda..."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                    android:id="@+id/btn_daftar"
+                    android:textColor="@android:color/white"
+                    android:minHeight="50dp"
+                    android:padding="12dp"
+                    android:layout_marginTop="32dp"
+                    android:text="Laporkan"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/shape_btn"
+                    android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
