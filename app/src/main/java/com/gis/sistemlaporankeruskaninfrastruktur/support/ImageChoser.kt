@@ -26,7 +26,7 @@ import java.io.File
 
 class ImageChoser(internal var context: Context, private var activity: Activity) {
 
-    private var isCameraUri = false
+    private var isCameraUri = true
 
     fun imageChoserDialog(title: String) {
 

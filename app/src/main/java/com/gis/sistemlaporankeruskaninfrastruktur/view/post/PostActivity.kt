@@ -18,6 +18,7 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.ImageChoser
 import com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity
 import kotlinx.android.synthetic.main.activity_tambah.*
 import java.io.File
+import java.io.FileOutputStream
 
 class PostActivity : AppCompatActivity() {
 
@@ -70,11 +71,9 @@ class PostActivity : AppCompatActivity() {
             }
 
             ImageChoser.RESULT_CODE_CAMERA -> {
-
                 val path =
                     File(Environment.getExternalStorageDirectory().toString() + ImageChoser.PATH)
                 val file = File(path.toString() + File.separator + "capture.jpg")
-
                 prosesImage(Uri.fromFile(file))
             }
 
@@ -110,25 +109,25 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun prosesImage(uri: Uri) {
-        val root = Environment.getExternalStorageDirectory().toString()
-        val myDir = File(root + ImageChoser.PATH)
-        myDir.mkdirs()
 
         Glide.with(this).asBitmap().load(uri).placeholder(R.drawable.ic_add_location).centerCrop()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .override(640, 480)
+            .centerCrop()
             .into(object : BitmapImageViewTarget(img_report) {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     super.onResourceReady(resource, transition)
                     img_report.setImageBitmap(resource)
 
-                    val output =
-                        File(myDir.toString() + File.separator.toString() + "capture.jpg").apply {
-                            if (exists()) delete();createNewFile()
-                        }
+                    resource.compress(
+                        Bitmap.CompressFormat.PNG,
+                        100,
+                        FileOutputStream(uri.path.toString())
+                    )
+                    val out = File(uri.path.toString())
 
-                    compressedImageFile = output
-
+                    compressedImageFile = out
 
                 }
             })
