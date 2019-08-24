@@ -17,7 +17,7 @@ object AppApiClient {
             .client(client.build())
             .build()
 
-    fun mainClient(): MainApi = retrofitApp.create(MainApi::class.java)
+    fun mainClient(): AppAPI = retrofitApp.create(AppAPI::class.java)
 
 
 }

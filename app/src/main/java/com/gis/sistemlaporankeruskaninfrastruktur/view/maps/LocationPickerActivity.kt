@@ -10,7 +10,7 @@ import com.gis.sistemlaporankeruskaninfrastruktur.R
 import com.gis.sistemlaporankeruskaninfrastruktur.support.IView
 import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
-import com.gis.sistemlaporankeruskaninfrastruktur.model.ReverseGeoResponse
+import com.gis.sistemlaporankeruskaninfrastruktur.model.maps.ReverseGeoResponse
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.*
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.maps.MapsPresenter
 import com.google.gson.Gson

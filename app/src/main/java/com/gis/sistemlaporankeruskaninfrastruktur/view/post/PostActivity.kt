@@ -1,4 +1,4 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.view
+package com.gis.sistemlaporankeruskaninfrastruktur.view.post
 
 import android.app.Activity
 import android.app.Dialog

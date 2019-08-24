@@ -1,4 +1,4 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.model
+package com.gis.sistemlaporankeruskaninfrastruktur.model.auth
 
 import com.google.gson.annotations.SerializedName
 

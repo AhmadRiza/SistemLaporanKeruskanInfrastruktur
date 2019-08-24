@@ -1,8 +1,11 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.modules.auth
+package com.gis.sistemlaporankeruskaninfrastruktur.modules.post
 
+import android.content.Context
 import com.gis.sistemlaporankeruskaninfrastruktur.api.AppApiClient
 import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.RegisterRequest
+import com.gis.sistemlaporankeruskaninfrastruktur.modules.auth.AuthInteractor
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.AppSession
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -13,24 +16,26 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState as net
  * Created by riza@deliv.co.id on 8/4/19.
  */
 
-class AuthPresenter(private val view: ViewNetworkState) : IAuthPresenter {
+class PostPresenter(
+    private val context: Context,
+    private val view: ViewNetworkState
+) : IPostPresenter {
 
-    private val interactor by lazy { AuthInteractor(AppApiClient.mainClient()) }
+    private val interactor by lazy { PostInteractor(AppApiClient.mainClient()) }
+    private val token by lazy { AppSession(context).getToken() }
 
-
-    override fun register(request: RegisterRequest) {
+    override fun likePost(idPost: String) {
         view.networkState = network.ShowLoading(true)
 
-        val body = Gson().toJson(request).toString()
-
         GlobalScope.launch {
-            val response = interactor.register(body)
+            val response = interactor.likePost(token.toString(), idPost)
+
             (view.networkState !is network.Destroy).apply {
                 view.networkState = network.ShowLoading(false)
                 when (response.first) {
                     true -> {
                         val data = response.second.toString()
-                        view.networkState = network.ResponseSuccess(Pair("register", data))
+                        view.networkState = network.ResponseSuccess(Pair("like_post", data))
                     }
                     false -> view.networkState = network.ResponseFailure(response.second)
                 }
@@ -38,27 +43,23 @@ class AuthPresenter(private val view: ViewNetworkState) : IAuthPresenter {
         }
     }
 
-
-    override fun login(email: String, pass: String) {
+    override fun getPost(page: Int) {
         view.networkState = network.ShowLoading(true)
 
-        val body = FormBody.Builder()
-            .add("email", email)
-            .add("password", pass)
-            .build()
-
         GlobalScope.launch {
-            val response = interactor.login(body)
+            val response = interactor.getPost(token.toString(), page)
+
             (view.networkState !is network.Destroy).apply {
                 view.networkState = network.ShowLoading(false)
                 when (response.first) {
                     true -> {
                         val data = response.second.toString()
-                        view.networkState = network.ResponseSuccess(Pair("login", data))
+                        view.networkState = network.ResponseSuccess(Pair("get_post", data))
                     }
                     false -> view.networkState = network.ResponseFailure(response.second)
                 }
             }
         }
     }
+
 }

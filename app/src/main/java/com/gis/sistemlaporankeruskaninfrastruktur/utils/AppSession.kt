@@ -1,7 +1,7 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.utils
 
 import android.content.Context
-import com.gis.sistemlaporankeruskaninfrastruktur.model.User
+import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.User
 import com.google.gson.Gson
 
 /**
@@ -10,7 +10,7 @@ import com.google.gson.Gson
 
 class AppSession(context: Context?) {
 
-    private val prefs by lazy { context?.let { it.getSharedPreferences("sipki",0) } }
+    private val prefs by lazy { context?.getSharedPreferences("sipki",0) }
 
 
     fun saveUser(user: User){
@@ -24,7 +24,7 @@ class AppSession(context: Context?) {
 
     fun isLoggedIn() = prefs?.getString("token", null) != null
 
-    fun getUser():User?{
+    fun getUser(): User?{
 
         val user = prefs?.getString("user", null)
         user?.let {
@@ -35,5 +35,7 @@ class AppSession(context: Context?) {
     }
 
     fun getToken() = prefs?.getString("token", null)
+
+    fun logOut() = prefs?.edit()?.clear()?.apply()
 
 }

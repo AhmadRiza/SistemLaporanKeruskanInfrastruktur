@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.reflect.InvocationTargetException
 
-abstract class Adapter<TipeData, ViewHolder : RecyclerView.ViewHolder>(protected var mLayout: Int,
-                                                                       private var mViewHolderClass: Class<ViewHolder>,
-                                                                       private var mModelClass: Class<TipeData>,
-                                                                       private var mData: ArrayList<TipeData>?)
+abstract class Adapter<TipeData, ViewHolder : RecyclerView.ViewHolder>(
+    private var mLayout: Int,
+    private var mViewHolderClass: Class<ViewHolder>,
+    private var mModelClass: Class<TipeData>,
+    private var mData: ArrayList<TipeData>?)
     : RecyclerView.Adapter<ViewHolder>() {
 
     fun addData(data: TipeData) {
@@ -73,7 +74,7 @@ abstract class Adapter<TipeData, ViewHolder : RecyclerView.ViewHolder>(protected
         bindView(holder, model, position)
     }
 
-    protected abstract fun bindView(holder: ViewHolder, model: TipeData?, position: Int)
+    protected abstract fun bindView(holder: ViewHolder, data: TipeData?, position: Int)
 
     fun getItem(position: Int): TipeData? {
         return mData?.get(position)

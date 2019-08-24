@@ -3,8 +3,8 @@ package com.gis.sistemlaporankeruskaninfrastruktur.view.register
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.gis.sistemlaporankeruskaninfrastruktur.R
-import com.gis.sistemlaporankeruskaninfrastruktur.model.RegisterRequest
-import com.gis.sistemlaporankeruskaninfrastruktur.model.User
+import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.RegisterRequest
+import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.User
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.auth.AuthPresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.support.IView
 import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState

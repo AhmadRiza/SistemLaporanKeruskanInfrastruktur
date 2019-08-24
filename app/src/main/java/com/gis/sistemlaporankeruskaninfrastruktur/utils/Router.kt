@@ -2,9 +2,9 @@ package com.gis.sistemlaporankeruskaninfrastruktur.utils
 
 import android.app.Activity
 import android.content.Intent
-import com.gis.sistemlaporankeruskaninfrastruktur.view.PostActivity
+import com.gis.sistemlaporankeruskaninfrastruktur.view.post.PostActivity
 import com.gis.sistemlaporankeruskaninfrastruktur.view.register.RegisterActivity
-import com.gis.sistemlaporankeruskaninfrastruktur.view.beranda.BerandaActivity
+import com.gis.sistemlaporankeruskaninfrastruktur.view.main.MainActivity
 import com.gis.sistemlaporankeruskaninfrastruktur.view.login.LoginActivity
 
 /**
@@ -13,9 +13,14 @@ import com.gis.sistemlaporankeruskaninfrastruktur.view.login.LoginActivity
 
 object Router {
 
+    fun LogOut(activity: Activity?){
+        AppSession(activity).logOut()
+        toLogin(activity, "")
+    }
+
     fun toBeranda(activity: Activity?){
         activity?.let {
-            it.startActivity(Intent(it, BerandaActivity::class.java)
+            it.startActivity(Intent(it, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
         }

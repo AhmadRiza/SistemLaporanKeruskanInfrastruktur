@@ -1,4 +1,4 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.modules.auth
+package com.gis.sistemlaporankeruskaninfrastruktur.modules.post
 
 import com.gis.sistemlaporankeruskaninfrastruktur.api.AppAPI
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.debugLog
@@ -9,19 +9,19 @@ import org.json.JSONObject
  * Created by riza@deliv.co.id on 8/4/19.
  */
 
-class AuthInteractor(var api: AppAPI) : IAuthIteractor {
-
-    override fun register(body: String): Pair<Boolean, String?> {
+class PostInteractor(var api: AppAPI) : IPostInteractor {
+    override fun likePost(token: String, idPost: String): Pair<Boolean, String?> {
         return try {
-            val response = api.register(body).execute()
+            val response = api.like(idPost, token).execute()
             when (response.isSuccessful) {
                 true -> {
                     val data = JSONObject(response.body().toString())
-                    Pair(true, data.getString("user"))
+                    Pair(true, data.getString("posts"))
                 }
                 false -> {
-                    val error = JSONObject(response.errorBody()?.string().toString())
-                    Pair(false, error.getString("message"))
+                    val code = response.code()
+                    val error = response.errorBody()?.string().toString()
+                    Pair(false, "[$code] $error")
                 }
             }
 
@@ -31,17 +31,17 @@ class AuthInteractor(var api: AppAPI) : IAuthIteractor {
         }
     }
 
-    override fun login(body: FormBody): Pair<Boolean, String?> {
+    override fun getPost(token: String, page: Int): Pair<Boolean, String?> {
         return try {
-            val response = api.login(body).execute()
+            val response = api.getPost(token, page).execute()
             when (response.isSuccessful) {
                 true -> {
                     val data = JSONObject(response.body().toString())
-                    Pair(true, data.getString("user"))
+                    Pair(true, data.getString("posts"))
                 }
                 false -> {
-                    val error = JSONObject(response.errorBody()?.string().toString())
-                    Pair(false, error.getString("message"))
+                    val error = response.errorBody()?.string().toString()
+                    Pair(false, error)
                 }
             }
 

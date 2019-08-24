@@ -21,7 +21,7 @@
         </activity>
         <activity
                 android:theme="@style/AppTheme.NoBar"
-                android:name=".view.beranda.BerandaActivity">
+                android:name=".view.main.MainActivity">
         </activity>
         <activity
                 android:windowSoftInputMode="adjustResize"
@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.PostActivity"/>
+        <activity android:name=".view.post.PostActivity"/>
         <activity android:name="com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity"/>
     </application>
 

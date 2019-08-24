@@ -1,4 +1,4 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.view.beranda.views
+package com.gis.sistemlaporankeruskaninfrastruktur.view.main.views
 
 
 import android.os.Bundle

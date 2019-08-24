@@ -3,7 +3,7 @@ package com.gis.sistemlaporankeruskaninfrastruktur.view.login
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gis.sistemlaporankeruskaninfrastruktur.R
-import com.gis.sistemlaporankeruskaninfrastruktur.model.User
+import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.User
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.auth.AuthPresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.support.IView
 import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState
@@ -39,14 +39,13 @@ class LoginActivity : AppCompatActivity(), IView, ViewNetworkState {
 
         btn_login?.setOnClickListener {
 
-            Router.toBeranda(this)
-            /*
+
             if (validate()) {
                 presenter.login(et_email?.text.toString().trim(), et_pass?.text.toString().trim())
             } else {
                 snackbar(root, "Email atau password tidak boleh kosong")
             }
-            */
+
 
         }
 

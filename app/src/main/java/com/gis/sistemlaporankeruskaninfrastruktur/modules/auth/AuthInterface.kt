@@ -1,6 +1,6 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.modules.auth
 
-import com.gis.sistemlaporankeruskaninfrastruktur.model.RegisterRequest
+import com.gis.sistemlaporankeruskaninfrastruktur.model.auth.RegisterRequest
 import okhttp3.FormBody
 
 /**
