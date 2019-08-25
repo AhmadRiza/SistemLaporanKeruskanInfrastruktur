@@ -46,14 +46,52 @@
                             android:background="@drawable/shape_photo"
                             android:layout_width="36dp"
                             android:layout_height="36dp"/>
-                    <TextView
-                            android:textColor="@color/colorText"
-                            android:id="@+id/txt_location"
-                            android:textSize="16sp"
+
+                    <LinearLayout
                             android:layout_marginStart="16dp"
-                            android:text="Tambahkan Lokasi Anda"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:textColor="@color/colorText"
+                                android:id="@+id/txt_location"
+                                android:textSize="16sp"
+                                android:text="Tambahkan Lokasi Anda"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                                android:visibility="gone"
+                                android:id="@+id/v_geofence_status"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <ProgressBar
+                                    android:id="@+id/loading_geofence"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp" />
+
+                            <ImageView
+                                    android:visibility="gone"
+                                    android:src="@drawable/ic_check"
+                                    android:id="@+id/img_geo_status"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp" />
+
+                            <TextView
+                                    android:id="@+id/tv_geofence_status"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Menghitung geofence..." />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

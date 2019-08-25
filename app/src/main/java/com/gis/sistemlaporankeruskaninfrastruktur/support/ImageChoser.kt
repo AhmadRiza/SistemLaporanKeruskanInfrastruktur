@@ -141,7 +141,7 @@ class ImageChoser(internal var context: Context, private var activity: Activity)
     }
 
     fun gallery() {
-        val path = File(Environment.getExternalStorageDirectory().toString() + "/")
+        val path = File(Environment.getExternalStorageDirectory().toString() + PATH)
         if (!path.exists()) {
             path.mkdirs()
         }

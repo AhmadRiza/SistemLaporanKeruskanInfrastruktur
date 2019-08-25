@@ -1,5 +1,6 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.view.post
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -17,15 +18,13 @@ import com.gis.sistemlaporankeruskaninfrastruktur.R
 import com.gis.sistemlaporankeruskaninfrastruktur.model.category.Category
 import com.gis.sistemlaporankeruskaninfrastruktur.model.category.CategoryResponse
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.category.CategoryPresenter
+import com.gis.sistemlaporankeruskaninfrastruktur.modules.geofencing.GeofencePresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.post.PostPresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.support.IView
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ImageChoser
 import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
-import com.gis.sistemlaporankeruskaninfrastruktur.utils.gone
-import com.gis.sistemlaporankeruskaninfrastruktur.utils.snackbar
-import com.gis.sistemlaporankeruskaninfrastruktur.utils.toast
-import com.gis.sistemlaporankeruskaninfrastruktur.utils.visible
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.*
 import com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity
 import com.gis.sistemlaporankeruskaninfrastruktur.view.post.viewholder.CategoryListener
 import com.gis.sistemlaporankeruskaninfrastruktur.view.post.views.DialogCategory
@@ -44,11 +43,13 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
     private val categoryPresenter by lazy { CategoryPresenter(this, this) }
     private val postPresenter by lazy { PostPresenter(this, this) }
+    private val geofencePresenter by lazy { GeofencePresenter(this) }
 
     private var selectedCategory: Category? = null
     private var location: String? = null
     private var lat: String? = null
     private var lon: String? = null
+    private var isInside = false
 
     private var viewState: ViewState = ViewState.CATEGORY
 
@@ -58,36 +59,7 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
         setToolbar()
         config()
 
-        btn_upload?.setOnClickListener {
-            imageChoser.imageChoserDialog("Pilih gambar yang akan dilaporkan")
-        }
-
-        btn_maps?.setOnClickListener {
-            startActivityForResult(Intent(this, LocationPickerActivity::class.java), 616)
-        }
-
-        btn_category?.setOnClickListener {
-            categoryPresenter.getCategories()
-            viewState = ViewState.CATEGORY
-            dialogCategory.showDialog()
-        }
-
-        btn_submit?.setOnClickListener {
-
-            if (validate()) {
-                viewState = ViewState.POST
-                postPresenter.newPost(
-                    lat!!,
-                    lon!!,
-                    location!!,
-                    selectedCategory!!.id,
-                    et_caption?.text.toString(),
-                    compressedImageFile!!
-                )
-
-            }
-
-        }
+        setupView()
 
     }
 
@@ -116,7 +88,12 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
         }
 
         if (et_caption?.text.toString().isEmpty()) {
-            snackbar(root, "Isi Laporan!")
+            snackbar(root, "Isi Laporan ANda!")
+            return false
+        }
+
+        if (!isInside) {
+            snackbar(root, "Anda di Luar Wilayah!")
             return false
         }
 
@@ -141,6 +118,38 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
 
     override fun setupView() {
+
+        btn_upload?.setOnClickListener {
+            imageChoser.imageChoserDialog("Pilih gambar yang akan dilaporkan")
+        }
+
+        btn_maps?.setOnClickListener {
+            startActivityForResult(Intent(this, LocationPickerActivity::class.java), 616)
+        }
+
+        btn_category?.setOnClickListener {
+            viewState = ViewState.CATEGORY
+            categoryPresenter.getCategories()
+            dialogCategory.showDialog()
+        }
+
+        btn_submit?.setOnClickListener {
+
+            if (validate()) {
+                viewState = ViewState.POST
+                postPresenter.newPost(
+                    lat!!,
+                    lon!!,
+                    location!!,
+                    selectedCategory!!.id,
+                    et_caption?.text.toString(),
+                    compressedImageFile!!
+                )
+
+            }
+
+        }
+
     }
 
     override var networkState: NetworkingState by Delegates.observable<NetworkingState>(
@@ -169,6 +178,17 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                         btn_submit?.visible()
                     }
                 }
+
+                ViewState.GEOFENCE -> {
+                    if (status) {
+                        loading_geofence?.visible()
+                        img_geo_status?.gone()
+                        tv_geofence_status?.text = "Menghitung geofence..."
+                    } else {
+                        loading_geofence?.gone()
+                        img_geo_status?.visible()
+                    }
+                }
             }
 
         }
@@ -194,7 +214,15 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                     }
 
                     "new_post" -> {
+                        setResult(Activity.RESULT_OK)
                         onBackPressed()
+                    }
+
+                    "geofence" -> {
+                        isInside = true
+                        img_geo_status?.setImageResource(R.drawable.ic_check)
+                        val data = response.second.toString()
+                        tv_geofence_status?.text = "Anda di wilayah $data"
                     }
 
                 }
@@ -204,7 +232,13 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
     override fun requestFailure(response: String?) {
         runOnUiThread {
-            toast(response.toString())
+
+            if (response.toString().contains("[401]")) Router.logOut(this)
+            else if (response.toString().contains("[geofence]")) {
+                toast(response.toString().replace("[geofence]", ""))
+                img_geo_status?.setImageResource(R.drawable.ic_error)
+                tv_geofence_status?.text = "Anda diluar wilayah"
+            }
         }
     }
 
@@ -233,6 +267,12 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                         if (lon!!.length > 15) lon = lon?.substring(0, 14)
 
                         txt_location?.text = "$location"
+
+                        v_geofence_status?.visible()
+                        viewState = ViewState.GEOFENCE
+                        isInside = false
+                        geofencePresenter.checkGeoFence(lat!!.toDouble(), lon!!.toDouble())
+
                     }
                 }
 
@@ -288,12 +328,19 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                     super.onResourceReady(resource, transition)
                     img_report.setImageBitmap(resource)
 
+                    val path =
+                        Environment.getExternalStorageDirectory().toString() +
+                                ImageChoser.PATH + File.separator + "capture.jpg"
+
+                    toast(path)
+
                     resource.compress(
-                        Bitmap.CompressFormat.PNG,
+                        Bitmap.CompressFormat.JPEG,
                         100,
-                        FileOutputStream(uri.path.toString())
+                        FileOutputStream(path)
                     )
-                    val out = File(uri.path.toString())
+
+                    val out = File(path)
 
                     compressedImageFile = out
 
@@ -318,7 +365,8 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
     private enum class ViewState {
         CATEGORY,
-        POST
+        POST,
+        GEOFENCE
     }
 
 

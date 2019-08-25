@@ -54,13 +54,13 @@ class PostPresenter(
     }
 
     override fun likePost(idPost: String) {
-        view.networkState = network.ShowLoading(true)
+//        view.networkState = network.ShowLoading(true)
 
         GlobalScope.launch {
             val response = interactor.likePost(token.toString(), idPost)
 
             (view.networkState !is network.Destroy).apply {
-                view.networkState = network.ShowLoading(false)
+                //                view.networkState = network.ShowLoading(false)
                 when (response.first) {
                     true -> {
                         val data = response.second.toString()

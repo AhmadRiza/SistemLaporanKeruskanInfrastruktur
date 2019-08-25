@@ -18,17 +18,21 @@
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.gis.sistemlaporankeruskaninfrastruktur.view.maps.MapsActivity">
-        </activity>
         <activity
+                android:screenOrientation="portrait"
+                android:name="com.gis.sistemlaporankeruskaninfrastruktur.view.maps.MapsActivity" />
+        <activity
+                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoBar"
                 android:name=".view.main.MainActivity">
         </activity>
         <activity
+                android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize"
                 android:name=".view.register.RegisterActivity">
         </activity>
         <activity
+                android:screenOrientation="portrait"
                 android:name=".view.login.LoginActivity"
                 android:theme="@style/AppTheme.NoBar">
             <intent-filter>
@@ -37,8 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.post.PostActivity"/>
-        <activity android:name="com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity"/>
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".view.post.PostActivity" />
+        <activity
+                android:screenOrientation="portrait"
+                android:name="com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity" />
     </application>
 
 </manifest>

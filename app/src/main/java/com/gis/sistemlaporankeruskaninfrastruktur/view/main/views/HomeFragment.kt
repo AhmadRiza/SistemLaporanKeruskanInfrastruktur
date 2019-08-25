@@ -1,5 +1,7 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.view.main.views
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -79,7 +81,7 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
         }
 
         fab_upload?.setOnClickListener {
-            Router.toUpload(activity)
+            Router.toNewPost(activity)
         }
 
         swipe_refresh?.setOnRefreshListener {
@@ -122,8 +124,10 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
         activity?.runOnUiThread {
             isLoading = status
             if (status) {
-                loading?.visible()
+                if (currPage == 1) loading_first?.visible()
+                else loading?.visible()
             } else {
+                loading_first?.gone()
                 loading?.gone()
             }
 
@@ -163,7 +167,7 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
             }
 
             if(response.toString().contains("[401]")){
-                Router.LogOut(activity)
+                Router.logOut(activity)
             }
 
         }
@@ -174,4 +178,19 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
         networkState = NetworkingState.Destroy()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode) {
+
+            Router.RESULT_POST -> {
+
+                refreshList()
+
+            }
+
+        }
+
+    }
 }

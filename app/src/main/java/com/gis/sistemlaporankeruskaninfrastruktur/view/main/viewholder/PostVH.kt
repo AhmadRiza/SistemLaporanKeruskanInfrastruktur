@@ -19,6 +19,8 @@ class PostVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         itemView.apply {
 
+            btn_like?.setImageResource(R.drawable.ic_like)
+
             data?.let { post: Post ->
                 tv_user_name?.text = post.user.name
                 tv_location?.text = post.location
@@ -41,12 +43,13 @@ class PostVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 } else {
                     btn_like?.setOnClickListener {
                         btn_like?.setImageResource(R.drawable.ic_like_blue)
-                        tv_like.text = "${post.likeCount + 1} orang menyukai ini."
+                        tv_like.text = "${post.likeCount.toInt() + 1} orang menyukai ini."
+                        btn_like?.isEnabled = false
                         listener.onLike(post.id)
                     }
                 }
 
-                img_post?.setOnClickListener {
+                root?.setOnClickListener {
                     listener.onClick(post)
                 }
 

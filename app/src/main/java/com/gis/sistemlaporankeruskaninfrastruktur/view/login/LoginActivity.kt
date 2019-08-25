@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity(), IView, ViewNetworkState {
         setContentView(R.layout.activity_login)
 
         if(session.isLoggedIn()){
-            Router.toBeranda(this)
+            Router.toMain(this)
             finish()
         }
 
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity(), IView, ViewNetworkState {
         }
 
         btn_daftar?.setOnClickListener {
-            Router.toDaftar(this)
+            Router.toRegister(this)
         }
 
     }
@@ -93,7 +93,7 @@ class LoginActivity : AppCompatActivity(), IView, ViewNetworkState {
                         val user = Gson().fromJson(response.second.toString(), User::class.java)
 
                         session.saveUser(user)
-                        Router.toBeranda(this)
+                        Router.toMain(this)
                         finish()
 
                     }
