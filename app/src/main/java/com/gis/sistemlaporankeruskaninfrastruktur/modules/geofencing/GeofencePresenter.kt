@@ -15,7 +15,6 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState as net
 class GeofencePresenter(
     private val view: ViewNetworkState
 ) : IGeofencePresenter {
-
     init {
 
         Polygon.initialize()

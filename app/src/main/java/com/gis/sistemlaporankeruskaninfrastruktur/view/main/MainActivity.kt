@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), AHBottomNavigation.OnTabSelectedListen
     private fun setUpNav() {
 
         pagerAdapter.addFragment(HomeFragment(), "Home")
-        pagerAdapter.addFragment(MapsFragment(), "Akun")
+        pagerAdapter.addFragment(MapsFragment(), "Maps")
         pagerAdapter.addFragment(UserFragment(), "Akun")
 
         view_pager?.apply {

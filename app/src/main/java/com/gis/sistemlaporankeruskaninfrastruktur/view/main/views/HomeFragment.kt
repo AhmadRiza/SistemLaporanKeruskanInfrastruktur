@@ -81,7 +81,7 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
         }
 
         fab_upload?.setOnClickListener {
-            Router.toNewPost(activity)
+            Router.toNewPost(this)
         }
 
         swipe_refresh?.setOnRefreshListener {
