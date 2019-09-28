@@ -47,6 +47,7 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
     private var selectedCategory: Category? = null
     private var location: String? = null
+    private var area: String? = null
     private var lat: String? = null
     private var lon: String? = null
     private var isInside = false
@@ -143,6 +144,7 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                     location!!,
                     selectedCategory!!.id,
                     et_caption?.text.toString(),
+                    area.toString(),
                     compressedImageFile!!
                 )
 
@@ -223,6 +225,7 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                         img_geo_status?.setImageResource(R.drawable.ic_check)
                         val data = response.second.toString()
                         tv_geofence_status?.text = "Anda di wilayah $data"
+                        area = data
                     }
 
                 }

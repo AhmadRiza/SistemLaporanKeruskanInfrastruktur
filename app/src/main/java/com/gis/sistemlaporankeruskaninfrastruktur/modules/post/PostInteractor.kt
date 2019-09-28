@@ -14,6 +14,26 @@ import java.io.File
 
 class PostInteractor(var api: AppAPI) : IPostInteractor {
 
+    override fun getPostByArea(token: String, area: String, page: Int): Pair<Boolean, String?> {
+        return try {
+            val response = api.getPostByArea(token, area, page).execute()
+            when (response.isSuccessful) {
+                true -> {
+                    val data = JSONObject(response.body().toString())
+                    Pair(true, data.getString("posts"))
+                }
+                false -> {
+                    val error = response.errorBody()?.string().toString()
+                    Pair(false, error)
+                }
+            }
+
+        } catch (error: Exception) {
+            debugLog(error.message)
+            return Pair(false, "network error")
+        }
+    }
+
     override fun newPost(
         token: String,
         lat: String,
@@ -21,6 +41,7 @@ class PostInteractor(var api: AppAPI) : IPostInteractor {
         location: String,
         categoryId: String,
         caption: String,
+        area: String,
         image: File
     ): Pair<Boolean, String?> {
 
@@ -35,6 +56,7 @@ class PostInteractor(var api: AppAPI) : IPostInteractor {
                 RequestBody.create(MediaType.parse("text/plain"), location),
                 RequestBody.create(MediaType.parse("text/plain"), categoryId),
                 RequestBody.create(MediaType.parse("text/plain"), caption),
+                RequestBody.create(MediaType.parse("text/plain"), area),
                 imagePart
             ).execute()
 

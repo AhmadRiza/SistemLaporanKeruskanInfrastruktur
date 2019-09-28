@@ -25,6 +25,13 @@ interface AppAPI {
         @Query("page") page: Int
     ): Call<String>
 
+    @GET("posts")
+    fun getPostByArea(
+        @Header("Authorization") token: String,
+        @Query("area") area: String,
+        @Query("page") page: Int
+    ): Call<String>
+
     @POST("posts/like/{id}")
     fun like(
         @Path("id") idPost: String,
@@ -49,6 +56,7 @@ interface AppAPI {
         @Part("location") location: RequestBody,
         @Part("category_id") categoryId: RequestBody,
         @Part("caption") caption: RequestBody,
+        @Part("area") area: RequestBody,
         @Part image: MultipartBody.Part
     ): Call<String>
 

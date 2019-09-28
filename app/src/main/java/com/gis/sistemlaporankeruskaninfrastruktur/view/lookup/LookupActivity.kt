@@ -122,7 +122,7 @@ class LookupActivity : BaseActivity() {
 
     private fun refreshList() {
         listPost.clear()
-        presenter.getPost(1)
+        presenter.getPostByArea(1, area)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

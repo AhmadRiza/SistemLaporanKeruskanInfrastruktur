@@ -29,6 +29,7 @@ class PostPresenter(
         location: String,
         categoryId: String,
         caption: String,
+        area: String,
         image: File
     ) {
 
@@ -36,7 +37,7 @@ class PostPresenter(
 
         GlobalScope.launch {
             val response = interactor.newPost(
-                token.toString(), lat, lon, location, categoryId, caption, image
+                token.toString(), lat, lon, location, categoryId, caption, area, image
             )
 
             (view.networkState !is network.Destroy).apply {
@@ -77,6 +78,25 @@ class PostPresenter(
 
         GlobalScope.launch {
             val response = interactor.getPost(token.toString(), page)
+
+            (view.networkState !is network.Destroy).apply {
+                view.networkState = network.ShowLoading(false)
+                when (response.first) {
+                    true -> {
+                        val data = response.second.toString()
+                        view.networkState = network.ResponseSuccess(Pair("get_post", data))
+                    }
+                    false -> view.networkState = network.ResponseFailure(response.second)
+                }
+            }
+        }
+    }
+
+    override fun getPostByArea(page: Int, area: String) {
+        view.networkState = network.ShowLoading(true)
+
+        GlobalScope.launch {
+            val response = interactor.getPostByArea(token.toString(), area, page)
 
             (view.networkState !is network.Destroy).apply {
                 view.networkState = network.ShowLoading(false)

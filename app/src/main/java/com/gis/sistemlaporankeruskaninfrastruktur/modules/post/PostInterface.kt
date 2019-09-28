@@ -11,6 +11,11 @@ interface IPostInteractor {
         page: Int
     ): Pair<Boolean, String?>
 
+    fun getPostByArea(
+        token: String,
+        area: String, page: Int
+    ): Pair<Boolean, String?>
+
     fun newPost(
         token: String,
         lat: String,
@@ -18,6 +23,7 @@ interface IPostInteractor {
         location: String,
         categoryId: String,
         caption: String,
+        area: String,
         image: File
     ): Pair<Boolean, String?>
 
@@ -35,7 +41,10 @@ interface IPostPresenter {
         location: String,
         categoryId: String,
         caption: String,
+        area: String,
         image: File
     )
+
     fun likePost(idPost: String)
+    fun getPostByArea(page: Int, area: String)
 }
