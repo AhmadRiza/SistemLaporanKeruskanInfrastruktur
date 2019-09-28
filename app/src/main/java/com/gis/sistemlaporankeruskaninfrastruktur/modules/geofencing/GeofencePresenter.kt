@@ -2,6 +2,7 @@ package com.gis.sistemlaporankeruskaninfrastruktur.modules.geofencing
 
 import com.gis.sistemlaporankeruskaninfrastruktur.core.Point
 import com.gis.sistemlaporankeruskaninfrastruktur.core.Polygon
+import com.gis.sistemlaporankeruskaninfrastruktur.model.post.Post
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.debugLog
 import kotlinx.coroutines.GlobalScope
@@ -15,11 +16,46 @@ import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState as net
 class GeofencePresenter(
     private val view: ViewNetworkState
 ) : IGeofencePresenter {
+
+    private var listPost = arrayListOf<Post>()
+
+
+    override fun addPost(data: ArrayList<Post>) {
+        GlobalScope.launch {
+
+            listPost.addAll(data)
+
+        }
+    }
+
+    override fun clearPost() {
+        GlobalScope.launch { listPost.clear() }
+    }
+
+    override fun searchPost(id: String) {
+        GlobalScope.launch {
+
+            for (post in listPost) {
+
+                if (post.id == id) {
+
+                    view.networkState = network.ResponseSuccess(Pair("get_postby_id", post))
+
+
+                }
+
+            }
+
+
+        }
+    }
+
     init {
 
         Polygon.initialize()
 
     }
+
 
     override fun checkGeoFence(lat: Double, lon: Double) {
 

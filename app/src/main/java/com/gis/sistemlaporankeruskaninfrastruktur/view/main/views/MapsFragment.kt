@@ -1,20 +1,31 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.view.main.views
 
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.Color.parseColor
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.gis.sistemlaporankeruskaninfrastruktur.R
+import com.gis.sistemlaporankeruskaninfrastruktur.model.post.Post
+import com.gis.sistemlaporankeruskaninfrastruktur.model.post.PostResponse
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.geofencing.GeofencePresenter
+import com.gis.sistemlaporankeruskaninfrastruktur.modules.post.PostPresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.BaseFragment
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.Router
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.toast
+import com.google.gson.Gson
 import com.mapbox.geojson.Point
 import com.mapbox.geojson.Polygon
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -25,14 +36,15 @@ import com.mapbox.mapboxsdk.style.layers.Property.*
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
+import kotlinx.android.synthetic.main.dialog_post.*
 import kotlinx.android.synthetic.main.fragment_maps.*
 import org.jetbrains.anko.support.v4.runOnUiThread
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
-
-    private val presenter by lazy { GeofencePresenter(this) }
+    private val geoPresenter by lazy { GeofencePresenter(this) }
+    private val postPresenter by lazy { context?.let { PostPresenter(it, this) } }
 
     private val klojen = mutableListOf<MutableList<Point>>()
     private val blimbing = mutableListOf<MutableList<Point>>()
@@ -40,6 +52,10 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     private val lowokwaru = mutableListOf<MutableList<Point>>()
     private val sukun = mutableListOf<MutableList<Point>>()
 
+    private var lastPage = 1
+    private var currPage = 1
+
+    private var mapBoxMap: MapboxMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +77,8 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
+
+        this.mapBoxMap = mapboxMap
 
         mapboxMap.cameraPosition = CameraPosition.Builder()
             .target(LatLng(-7.983908, 112.621391))
@@ -205,11 +223,21 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
         mapboxMap.addOnMapClickListener {
 
-            presenter.checkGeoFence(it.latitude, it.longitude)
+            geoPresenter.checkGeoFence(it.latitude, it.longitude)
 
             true
 
         }
+
+        mapBoxMap?.setOnMarkerClickListener {
+
+            geoPresenter.searchPost(it.title)
+
+            true
+        }
+
+        postPresenter?.getPost(1)
+
     }
 
 
@@ -224,10 +252,87 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
                         Router.toLookUp(activity, area)
                     }
 
+                    "get_post" -> {
+                        val data =
+                            Gson().fromJson(response.second.toString(), PostResponse::class.java)
+                        currPage = data.currPage
+                        lastPage = data.lastPage
+                        geoPresenter.addPost(data.data)
+                        notifyMarker(data.data)
+                        if (currPage < lastPage) postPresenter?.getPost(++currPage)
+                    }
+
+                    "get_postby_id" -> {
+
+                        val data = response.second as Post
+
+                        showDialog(data)
+
+                    }
+
+
                 }
 
 
             }
+        }
+    }
+
+    private fun showDialog(post: Post) {
+
+        Dialog(context!!, R.style.myDialogMenu).apply {
+
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            setContentView(R.layout.dialog_post)
+
+            findViewById<TextView>(R.id.tv_user_name)?.text = post.user.name
+            tv_location?.text = post.location
+            tv_caption?.text = post.caption
+            tv_category?.text = "#${post.category.name}"
+            img_post?.apply {
+                Glide.with(context)
+                    .load(post.img)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(this)
+            }
+
+            tv_like?.text = "${post.likeCount} orang menyukai ini."
+
+            if (post.isLiked) {
+                btn_like?.setImageResource(R.drawable.ic_like_blue)
+                btn_like?.setOnClickListener {
+
+                }
+            } else {
+                btn_like?.setOnClickListener {
+                    btn_like?.setImageResource(R.drawable.ic_like_blue)
+                    tv_like.text = "${post.likeCount.toInt() + 1} orang menyukai ini."
+                    btn_like?.isEnabled = false
+                    postPresenter?.likePost(post.id)
+                }
+            }
+
+        }.show()
+
+    }
+
+    private fun notifyMarker(data: ArrayList<Post>) {
+
+
+        for (post in data) {
+
+            mapBoxMap?.addMarker(
+                MarkerOptions()
+                    .position(LatLng(post.lat.toDouble(), post.lon.toDouble()))
+                    .setTitle(post.id)
+            )
+
         }
     }
 
