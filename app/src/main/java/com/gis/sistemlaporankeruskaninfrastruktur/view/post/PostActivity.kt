@@ -233,6 +233,8 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
         }
     }
 
+    private fun isCN() = radio_cn?.isChecked ?: true
+
     override fun requestFailure(response: String?) {
         runOnUiThread {
 
@@ -274,7 +276,11 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                         v_geofence_status?.visible()
                         viewState = ViewState.GEOFENCE
                         isInside = false
-                        geofencePresenter.checkGeoFence(lat!!.toDouble(), lon!!.toDouble())
+                        geofencePresenter.checkGeofenceUsingWNCN(
+                            lat!!.toDouble(),
+                            lon!!.toDouble(),
+                            isCN()
+                        )
 
                     }
                 }

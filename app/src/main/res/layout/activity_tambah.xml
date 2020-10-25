@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:animateLayoutChanges="true">
 
     <androidx.core.widget.NestedScrollView
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-    >
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
             <androidx.cardview.widget.CardView
                     android:id="@+id/btn_maps"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="16dp"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="16dp"
+                    app:cardUseCompatPadding="true">
 
                 <LinearLayout
-                        android:gravity="center_vertical"
-                        android:background="@android:color/white"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="8dp">
+
                     <ImageView
-                            android:padding="8dp"
-                            android:src="@drawable/ic_add_location_black_24dp"
-                            android:background="@drawable/shape_photo"
                             android:layout_width="36dp"
-                            android:layout_height="36dp"/>
+                            android:layout_height="36dp"
+                            android:background="@drawable/shape_photo"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_add_location_black_24dp" />
 
                     <LinearLayout
-                            android:layout_marginStart="16dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:orientation="vertical">
 
                         <TextView
-                                android:textColor="@color/colorText"
                                 android:id="@+id/txt_location"
-                                android:textSize="16sp"
-                                android:text="Tambahkan Lokasi Anda"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:text="Tambahkan Lokasi Anda"
+                                android:textColor="@color/colorText"
+                                android:textSize="16sp" />
 
                         <LinearLayout
-                                android:visibility="gone"
                                 android:id="@+id/v_geofence_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:visibility="gone">
 
                             <ProgressBar
                                     android:id="@+id/loading_geofence"
@@ -76,17 +76,17 @@
                                     android:layout_height="16dp" />
 
                             <ImageView
-                                    android:visibility="gone"
-                                    android:src="@drawable/ic_check"
                                     android:id="@+id/img_geo_status"
                                     android:layout_width="20dp"
-                                    android:layout_height="20dp" />
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/ic_check"
+                                    android:visibility="gone" />
 
                             <TextView
                                     android:id="@+id/tv_geofence_status"
-                                    android:layout_marginStart="10dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
                                     android:text="Menghitung geofence..." />
                         </LinearLayout>
 
@@ -99,27 +99,27 @@
 
             <androidx.cardview.widget.CardView
                     android:id="@+id/btn_upload"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="16dp"
+                    app:cardUseCompatPadding="true">
 
                 <FrameLayout
-                        android:background="@android:color/black"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp">
+                        android:layout_height="150dp"
+                        android:background="@android:color/black">
 
                     <ImageView
-                            android:alpha="0.8"
-                            android:scaleType="centerCrop"
-                            tools:src="@drawable/asset_dummy"
                             android:id="@+id/img_report"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:alpha="0.8"
+                            android:scaleType="centerCrop"
+                            tools:src="@drawable/asset_dummy" />
 
                 </FrameLayout>
 
@@ -128,48 +128,48 @@
                         android:layout_height="wrap_content">
 
                     <LinearLayout
-                            android:background="@android:color/white"
                             android:id="@+id/v_instruct_add"
-                            android:gravity="center"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp">
+                            android:layout_height="150dp"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                         <ImageView
-                                android:src="@drawable/ic_add_black_24dp"
                                 android:layout_width="36dp"
-                                android:layout_height="36dp" />
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_add_black_24dp" />
 
                         <TextView
-                                android:layout_marginTop="16dp"
-                                android:textSize="16sp"
-                                android:text="Tambahkan Foto Untuk Dilaporkan"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="Tambahkan Foto Untuk Dilaporkan"
+                                android:textSize="16sp" />
 
 
                     </LinearLayout>
 
                     <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/v_instruct_change"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="150dp">
+                            android:visibility="gone">
 
                         <ImageView
-                                android:src="@drawable/ic_camera_alt_black_24dp"
                                 android:layout_width="36dp"
-                                android:layout_height="36dp" />
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_camera_alt_black_24dp" />
 
                         <TextView
-                                android:textColor="@android:color/white"
-                                android:layout_marginTop="16dp"
-                                android:textSize="16sp"
-                                android:text="Ganti foto"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="Ganti foto"
+                                android:textColor="@android:color/white"
+                                android:textSize="16sp" />
 
 
                     </LinearLayout>
@@ -178,90 +178,126 @@
 
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                     android:id="@+id/btn_category"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginTop="8dp"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-            >
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="16dp"
+                    app:cardUseCompatPadding="true">
 
                 <LinearLayout
-                        android:gravity="center_vertical"
-                        android:background="@android:color/white"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="8dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="8dp">
 
                     <TextView
-                            android:textColor="@color/colorText"
                             android:id="@+id/tv_category"
-                            android:layout_weight="1"
-                            android:textSize="16sp"
-                            android:text="Pilih Kategori"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pilih Kategori"
+                            android:textColor="@color/colorText"
+                            android:textSize="16sp" />
+
                     <ImageView
-                            android:src="@drawable/ic_arrow_drop_down_black_24dp"
                             android:layout_width="36dp"
-                            android:layout_height="36dp"/>
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_arrow_drop_down_black_24dp" />
                 </LinearLayout>
 
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginTop="4dp"
-                    app:contentPadding="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-            >
-                <EditText
-                        android:id="@+id/et_caption"
-                        android:textColor="@color/colorText"
-                        android:background="@android:color/transparent"
-                        android:minLines="4"
-                        android:gravity="top"
-                        android:hint="Tulis Laporan Anda..."
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardUseCompatPadding="true">
+
+                <RadioGroup
+                        android:id="@+id/radio_group_wncn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                />
+                    <RadioButton
+                            android:checked="true"
+                            android:layout_margin="16dp"
+                            android:id="@+id/radio_cn"
+                            android:textSize="16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Crossing Point" />
+
+                    <RadioButton
+                            android:layout_marginVertical="16dp"
+                            android:id="@+id/radio_wn"
+                            android:textSize="16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Winding Point" />
+
+                </RadioGroup>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="16dp">
+
+                <EditText
+                        android:id="@+id/et_caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="top"
+                        android:hint="Tulis Laporan Anda..."
+                        android:minLines="4"
+                        android:textColor="@color/colorText"
+
+                        />
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
-                    android:layout_marginTop="32dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp">
 
 
                 <ProgressBar
-                        android:visibility="gone"
-                        android:layout_gravity="center"
                         android:id="@+id/loading"
                         android:layout_width="40dp"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
 
                 <Button
                         android:id="@+id/btn_submit"
-                        android:textColor="@android:color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_btn"
                         android:minHeight="50dp"
                         android:padding="12dp"
                         android:text="Laporkan"
-                        android:textSize="16sp"
-                        android:layout_width="match_parent"
-                        android:background="@drawable/shape_btn"
-                        android:layout_height="wrap_content" />
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
 
 
             </FrameLayout>
