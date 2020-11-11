@@ -24,7 +24,7 @@ import com.gis.sistemlaporankeruskaninfrastruktur.utils.visible
 import com.gis.sistemlaporankeruskaninfrastruktur.view.main.viewholder.PostVH
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.toast
 import kotlin.properties.Delegates
 
 /**
@@ -149,8 +149,8 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
                     }
 
                     "like_post" -> {
-                        if(BuildConfig.DEBUG){
-                            toast("You liked it!")
+                        if (BuildConfig.DEBUG) {
+                            context?.toast("You liked it!")
                         }
                     }
 
@@ -163,7 +163,7 @@ class HomeFragment : Fragment(), IView, ViewNetworkState, PostVH.PostItemListene
         activity?.runOnUiThread {
 
             if(BuildConfig.DEBUG){
-                toast(response.toString())
+                context?.toast(response.toString())
             }
 
             if(response.toString().contains("[401]")){

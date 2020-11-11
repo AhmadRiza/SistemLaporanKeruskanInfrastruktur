@@ -38,7 +38,6 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import kotlinx.android.synthetic.main.dialog_post.*
 import kotlinx.android.synthetic.main.fragment_maps.*
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
@@ -59,7 +58,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mapbox.getInstance(context!!, getText(R.string.MAP_KEY).toString())
+        Mapbox.getInstance(requireContext(), getText(R.string.MAP_KEY).toString())
         initMaps()
     }
 
@@ -242,7 +241,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
 
     override fun requestSuccess(response: Any?) {
-        runOnUiThread {
+        activity?.runOnUiThread {
             if (response is Pair<*, *>) {
 
                 when (response.first) {
@@ -280,7 +279,7 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun showDialog(post: Post) {
 
-        Dialog(context!!, R.style.myDialogMenu).apply {
+        Dialog(requireContext(), R.style.myDialogMenu).apply {
 
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
