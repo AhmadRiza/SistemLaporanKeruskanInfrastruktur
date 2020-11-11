@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme.NoBar.White" parent="AppTheme.NoBar">
         <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="DialogStyle" parent="BaseDialogStyle">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>
