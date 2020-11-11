@@ -20,10 +20,12 @@ data class PostModel(
     val location: String,
     val img: String,
     val caption: String,
-    val likeCount: String,
-    var isLiked: Boolean,
+    val likeCount: String = "1",
+    var isLiked: Boolean = false,
     val date: Date,
-    val categoryId: Int
+    val area: String,
+    val categoryId: Int,
+    val userName: String
 )
 
 @Entity

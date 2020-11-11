@@ -7,8 +7,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import com.gis.sistemlaporankeruskaninfrastruktur.R
 import com.gis.sistemlaporankeruskaninfrastruktur.support.adapter.FragmentAdapter
-import com.gis.sistemlaporankeruskaninfrastruktur.view.main.views.HomeFragment
-import com.gis.sistemlaporankeruskaninfrastruktur.view.main.views.MapsFragment
+import com.gis.sistemlaporankeruskaninfrastruktur.view.main.home.HomeFragment
+import com.gis.sistemlaporankeruskaninfrastruktur.view.main.maps.MapsFragment
 import com.gis.sistemlaporankeruskaninfrastruktur.view.main.views.UserFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

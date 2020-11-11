@@ -1,9 +1,7 @@
-package com.gis.sistemlaporankeruskaninfrastruktur.view.main.views
-
+package com.gis.sistemlaporankeruskaninfrastruktur.view.main.maps
 
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Color.parseColor
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,13 +30,12 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.FillLayer
-import com.mapbox.mapboxsdk.style.layers.Property.*
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
+import com.mapbox.mapboxsdk.style.layers.Property
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
+import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.dialog_post.*
-import kotlinx.android.synthetic.main.fragment_maps.*
-
 
 class MapsFragment : BaseFragment(), OnMapReadyCallback {
 
@@ -88,26 +85,25 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             it.addSource(GeoJsonSource("klo", Polygon.fromLngLats(klojen)))
             it.addLayerBelow(
                 FillLayer("klo", "klo").withProperties(
-                    fillColor(parseColor("#C03BB2D0"))
-                )
-                , "settlement-label"
+                    PropertyFactory.fillColor(Color.parseColor("#C03BB2D0"))
+                ), "settlement-label"
             )
 
             it.addLayerAbove(
                 SymbolLayer("klo_label", "klo").withProperties(
-                    textField("Klojen"),
-                    textSize(18f),
-                    textColor(Color.WHITE),
-                    textVariableAnchor(
+                    PropertyFactory.textField("Klojen"),
+                    PropertyFactory.textSize(18f),
+                    PropertyFactory.textColor(Color.WHITE),
+                    PropertyFactory.textVariableAnchor(
                         arrayOf(
-                            TEXT_ANCHOR_TOP,
-                            TEXT_ANCHOR_BOTTOM,
-                            TEXT_ANCHOR_LEFT,
-                            TEXT_ANCHOR_RIGHT
+                            Property.TEXT_ANCHOR_TOP,
+                            Property.TEXT_ANCHOR_BOTTOM,
+                            Property.TEXT_ANCHOR_LEFT,
+                            Property.TEXT_ANCHOR_RIGHT
                         )
                     ),
-                    textJustify(TEXT_JUSTIFY_AUTO),
-                    textRadialOffset(0.5f)
+                    PropertyFactory.textJustify(Property.TEXT_JUSTIFY_AUTO),
+                    PropertyFactory.textRadialOffset(0.5f)
                 ), "klo"
             )
 
@@ -116,25 +112,25 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             it.addSource(GeoJsonSource("bli", Polygon.fromLngLats(blimbing)))
             it.addLayerBelow(
                 FillLayer("bli", "bli").withProperties(
-                    fillColor(parseColor("#B36A1B9A"))
+                    PropertyFactory.fillColor(Color.parseColor("#B36A1B9A"))
                 ), "settlement-label"
             )
 
             it.addLayerAbove(
                 SymbolLayer("bli_label", "bli").withProperties(
-                    textField("Blimbing"),
-                    textSize(18f),
-                    textColor(Color.WHITE),
-                    textVariableAnchor(
+                    PropertyFactory.textField("Blimbing"),
+                    PropertyFactory.textSize(18f),
+                    PropertyFactory.textColor(Color.WHITE),
+                    PropertyFactory.textVariableAnchor(
                         arrayOf(
-                            TEXT_ANCHOR_TOP,
-                            TEXT_ANCHOR_BOTTOM,
-                            TEXT_ANCHOR_LEFT,
-                            TEXT_ANCHOR_RIGHT
+                            Property.TEXT_ANCHOR_TOP,
+                            Property.TEXT_ANCHOR_BOTTOM,
+                            Property.TEXT_ANCHOR_LEFT,
+                            Property.TEXT_ANCHOR_RIGHT
                         )
                     ),
-                    textJustify(TEXT_JUSTIFY_AUTO),
-                    textRadialOffset(0.5f)
+                    PropertyFactory.textJustify(Property.TEXT_JUSTIFY_AUTO),
+                    PropertyFactory.textRadialOffset(0.5f)
                 ), "bli"
             )
 
@@ -144,25 +140,25 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             it.addSource(GeoJsonSource("kd", Polygon.fromLngLats(kedungkandang)))
             it.addLayerBelow(
                 FillLayer("kd", "kd").withProperties(
-                    fillColor(parseColor("#B3C62828"))
+                    PropertyFactory.fillColor(Color.parseColor("#B3C62828"))
                 ), "settlement-label"
             )
 
             it.addLayerAbove(
                 SymbolLayer("ked_label", "kd").withProperties(
-                    textField("Kedung Kandang"),
-                    textSize(18f),
-                    textColor(Color.WHITE),
-                    textVariableAnchor(
+                    PropertyFactory.textField("Kedung Kandang"),
+                    PropertyFactory.textSize(18f),
+                    PropertyFactory.textColor(Color.WHITE),
+                    PropertyFactory.textVariableAnchor(
                         arrayOf(
-                            TEXT_ANCHOR_TOP,
-                            TEXT_ANCHOR_BOTTOM,
-                            TEXT_ANCHOR_LEFT,
-                            TEXT_ANCHOR_RIGHT
+                            Property.TEXT_ANCHOR_TOP,
+                            Property.TEXT_ANCHOR_BOTTOM,
+                            Property.TEXT_ANCHOR_LEFT,
+                            Property.TEXT_ANCHOR_RIGHT
                         )
                     ),
-                    textJustify(TEXT_JUSTIFY_AUTO),
-                    textRadialOffset(0.5f)
+                    PropertyFactory.textJustify(Property.TEXT_JUSTIFY_AUTO),
+                    PropertyFactory.textRadialOffset(0.5f)
                 ), "kd"
             )
 
@@ -170,24 +166,24 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             it.addSource(GeoJsonSource("low", Polygon.fromLngLats(lowokwaru)))
             it.addLayerBelow(
                 FillLayer("low", "low").withProperties(
-                    fillColor(parseColor("#B32E7D32"))
+                    PropertyFactory.fillColor(Color.parseColor("#B32E7D32"))
                 ), "settlement-label"
             )
             it.addLayerAbove(
                 SymbolLayer("low_label", "low").withProperties(
-                    textField("Lowokwaru"),
-                    textSize(18f),
-                    textColor(Color.WHITE),
-                    textVariableAnchor(
+                    PropertyFactory.textField("Lowokwaru"),
+                    PropertyFactory.textSize(18f),
+                    PropertyFactory.textColor(Color.WHITE),
+                    PropertyFactory.textVariableAnchor(
                         arrayOf(
-                            TEXT_ANCHOR_TOP,
-                            TEXT_ANCHOR_BOTTOM,
-                            TEXT_ANCHOR_LEFT,
-                            TEXT_ANCHOR_RIGHT
+                            Property.TEXT_ANCHOR_TOP,
+                            Property.TEXT_ANCHOR_BOTTOM,
+                            Property.TEXT_ANCHOR_LEFT,
+                            Property.TEXT_ANCHOR_RIGHT
                         )
                     ),
-                    textJustify(TEXT_JUSTIFY_AUTO),
-                    textRadialOffset(0.5f)
+                    PropertyFactory.textJustify(Property.TEXT_JUSTIFY_AUTO),
+                    PropertyFactory.textRadialOffset(0.5f)
                 ), "low"
             )
 
@@ -196,25 +192,25 @@ class MapsFragment : BaseFragment(), OnMapReadyCallback {
             it.addSource(GeoJsonSource("su", Polygon.fromLngLats(sukun)))
             it.addLayerBelow(
                 FillLayer("su", "su").withProperties(
-                    fillColor(parseColor("#B3FF8F00"))
+                    PropertyFactory.fillColor(Color.parseColor("#B3FF8F00"))
                 ), "settlement-label"
             )
 
             it.addLayerAbove(
                 SymbolLayer("su_label", "su").withProperties(
-                    textField("Sukun"),
-                    textSize(18f),
-                    textColor(Color.WHITE),
-                    textVariableAnchor(
+                    PropertyFactory.textField("Sukun"),
+                    PropertyFactory.textSize(18f),
+                    PropertyFactory.textColor(Color.WHITE),
+                    PropertyFactory.textVariableAnchor(
                         arrayOf(
-                            TEXT_ANCHOR_TOP,
-                            TEXT_ANCHOR_BOTTOM,
-                            TEXT_ANCHOR_LEFT,
-                            TEXT_ANCHOR_RIGHT
+                            Property.TEXT_ANCHOR_TOP,
+                            Property.TEXT_ANCHOR_BOTTOM,
+                            Property.TEXT_ANCHOR_LEFT,
+                            Property.TEXT_ANCHOR_RIGHT
                         )
                     ),
-                    textJustify(TEXT_JUSTIFY_AUTO),
-                    textRadialOffset(0.5f)
+                    PropertyFactory.textJustify(Property.TEXT_JUSTIFY_AUTO),
+                    PropertyFactory.textRadialOffset(0.5f)
                 ), "su"
             )
 
