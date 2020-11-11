@@ -71,3 +71,5 @@ fun Activity.showKeyboad(view: View) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
+
+fun Exception.printDebugLog() = debugLog(message.toString())
