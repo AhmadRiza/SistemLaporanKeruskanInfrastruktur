@@ -89,7 +89,7 @@ abstract class BaseRepository(private val sessionListener: SessionListener) {
     protected suspend fun <T> roomQuery(query: suspend () -> T?): T? {
         return try {
             query.invoke()
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             e.printDebugLog()
             null
         }
@@ -100,7 +100,7 @@ abstract class BaseRepository(private val sessionListener: SessionListener) {
         return try {
             query.invoke()
             true
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             e.printDebugLog()
             false
         }
