@@ -10,6 +10,7 @@ import com.gis.sistemlaporankeruskaninfrastruktur.data.PostCategory
 import com.gis.sistemlaporankeruskaninfrastruktur.data.PostModel
 import com.gis.sistemlaporankeruskaninfrastruktur.support.adapter.Adapter2Diff
 import kotlinx.android.synthetic.main.item_laporan.view.*
+import java.io.File
 
 /**
  * Created by riza@deliv.co.id on 11/11/20.
@@ -60,7 +61,7 @@ class PostAdapter(private val listener: PostItemListener) :
                     tv_category?.text = "#${it.category?.name}"
                     img_post?.apply {
                         Glide.with(context)
-                            .load(it.post.img)
+                            .load(File(it.post.img))
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(this)
                     }

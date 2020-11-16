@@ -9,7 +9,7 @@ import android.view.Window
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gis.sistemlaporankeruskaninfrastruktur.R
-import com.gis.sistemlaporankeruskaninfrastruktur.model.category.Category
+import com.gis.sistemlaporankeruskaninfrastruktur.data.CategoryModel
 import com.gis.sistemlaporankeruskaninfrastruktur.support.adapter.Adapter
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.gone
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.showKeyboad
@@ -21,15 +21,15 @@ import kotlinx.android.synthetic.main.dialog_kategori.*
 
 class DialogCategory(private var activity: Activity, private val callback: CategoryListener) {
 
-    private var adapterCategory: Adapter<Category, CategoryVH>
+    private var adapterCategory: Adapter<CategoryModel, CategoryVH>
 
     init {
-        adapterCategory = object : Adapter<Category, CategoryVH>(
+        adapterCategory = object : Adapter<CategoryModel, CategoryVH>(
             R.layout.item_category,
-            CategoryVH::class.java, Category::class.java,
+            CategoryVH::class.java, CategoryModel::class.java,
             arrayListOf()
         ) {
-            override fun bindView(holder: CategoryVH, model: Category?, position: Int) {
+            override fun bindView(holder: CategoryVH, model: CategoryModel?, position: Int) {
                 holder.bind(model, callback)
             }
 
@@ -78,7 +78,7 @@ class DialogCategory(private var activity: Activity, private val callback: Categ
         }
     }
 
-    fun updateList(data: List<Category>) {
+    fun updateList(data: List<CategoryModel>) {
         adapterCategory.updateListData(data)
         dialog?.rv_category?.apply {
             adapter = adapterCategory

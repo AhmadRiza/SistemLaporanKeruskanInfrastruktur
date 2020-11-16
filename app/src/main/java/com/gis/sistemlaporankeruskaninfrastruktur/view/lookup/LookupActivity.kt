@@ -6,20 +6,20 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gis.sistemlaporankeruskaninfrastruktur.BuildConfig
 import com.gis.sistemlaporankeruskaninfrastruktur.R
+import com.gis.sistemlaporankeruskaninfrastruktur.data.PostModel
 import com.gis.sistemlaporankeruskaninfrastruktur.model.post.Post
 import com.gis.sistemlaporankeruskaninfrastruktur.model.post.PostResponse
 import com.gis.sistemlaporankeruskaninfrastruktur.modules.post.PostPresenter
 import com.gis.sistemlaporankeruskaninfrastruktur.support.EndlessScrollListener
-import com.gis.sistemlaporankeruskaninfrastruktur.support.adapter.Adapter
 import com.gis.sistemlaporankeruskaninfrastruktur.utils.*
-import com.gis.sistemlaporankeruskaninfrastruktur.view.main.viewholder.PostVH
+import com.gis.sistemlaporankeruskaninfrastruktur.view.main.home.PostAdapter
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_lookup.*
 
-class LookupActivity : BaseActivity() {
+class LookupActivity : BaseActivity(), PostAdapter.PostItemListener {
 
     private val listPost = arrayListOf<Post>()
-    private lateinit var postAdapter: Adapter<Post, PostVH>
+    private val postAdapter by lazy { PostAdapter(this) }
     private val presenter by lazy { PostPresenter(this, this) }
 
     private var area = ""
@@ -72,26 +72,6 @@ class LookupActivity : BaseActivity() {
         supportActionBar?.title = "Laporan di $area"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        postAdapter = object : Adapter<Post, PostVH>(
-            R.layout.item_laporan,
-            PostVH::class.java,
-            Post::class.java,
-            listPost
-        ) {
-            override fun bindView(holder: PostVH, data: Post?, position: Int) {
-                holder.bind(data, object : PostVH.PostItemListener {
-                    override fun onDisike(id: String) = Unit
-
-                    override fun onClick(data: Post?) = Unit
-
-                    override fun onLike(id: String) {
-                        presenter.likePost(id)
-                    }
-
-                })
-            }
-
-        }
 
         val lm = LinearLayoutManager(this)
         rv_post?.apply {
@@ -155,6 +135,18 @@ class LookupActivity : BaseActivity() {
             }
 
         }
+    }
+
+    override fun onLike(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDisike(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClick(data: PostModel) {
+        TODO("Not yet implemented")
     }
 
 

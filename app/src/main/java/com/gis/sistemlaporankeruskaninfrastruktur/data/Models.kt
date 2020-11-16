@@ -14,9 +14,9 @@ import java.util.*
 
 @Entity
 data class PostModel(
-    @PrimaryKey(autoGenerate = true) val postId: Int,
-    val lat: String,
-    val lon: String,
+    @PrimaryKey(autoGenerate = true) val postId: Int = 0,
+    val lat: Double,
+    val lon: Double,
     val location: String,
     val img: String,
     val caption: String,
@@ -30,7 +30,7 @@ data class PostModel(
 
 @Entity
 data class CategoryModel(
-    @PrimaryKey(autoGenerate = true) @SerializedName("id") val categoryId: Int,
+    @PrimaryKey(autoGenerate = true) @SerializedName("id") val categoryId: Int = 0,
     @SerializedName("nama") val name: String,
     var deleted: Boolean = false
 )

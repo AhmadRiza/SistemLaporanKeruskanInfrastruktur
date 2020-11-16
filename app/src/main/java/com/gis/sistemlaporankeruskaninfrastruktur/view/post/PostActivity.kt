@@ -1,66 +1,95 @@
 package com.gis.sistemlaporankeruskaninfrastruktur.view.post
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.gis.sistemlaporankeruskaninfrastruktur.R
-import com.gis.sistemlaporankeruskaninfrastruktur.model.category.Category
-import com.gis.sistemlaporankeruskaninfrastruktur.model.category.CategoryResponse
-import com.gis.sistemlaporankeruskaninfrastruktur.modules.category.CategoryPresenter
-import com.gis.sistemlaporankeruskaninfrastruktur.modules.geofencing.GeofencePresenter
-import com.gis.sistemlaporankeruskaninfrastruktur.modules.post.PostPresenter
-import com.gis.sistemlaporankeruskaninfrastruktur.support.IView
+import com.gis.sistemlaporankeruskaninfrastruktur.data.CategoryModel
 import com.gis.sistemlaporankeruskaninfrastruktur.support.ImageChoser
-import com.gis.sistemlaporankeruskaninfrastruktur.support.NetworkingState
-import com.gis.sistemlaporankeruskaninfrastruktur.support.ViewNetworkState
-import com.gis.sistemlaporankeruskaninfrastruktur.utils.*
+import com.gis.sistemlaporankeruskaninfrastruktur.support.base.MyBaseActivity
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.gone
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.snackbar
+import com.gis.sistemlaporankeruskaninfrastruktur.utils.visible
 import com.gis.sistemlaporankeruskaninfrastruktur.view.maps.LocationPickerActivity
 import com.gis.sistemlaporankeruskaninfrastruktur.view.post.viewholder.CategoryListener
 import com.gis.sistemlaporankeruskaninfrastruktur.view.post.views.DialogCategory
-import com.google.gson.Gson
+import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_tambah.*
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.properties.Delegates
+import java.util.*
 
-class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkState {
+class PostActivity : MyBaseActivity(), CategoryListener {
 
-    private var compressedImageFile: File? = null
 
     private val imageChoser by lazy { ImageChoser(this, this) }
     private val dialogCategory by lazy { DialogCategory(this, this) }
 
-    private val categoryPresenter by lazy { CategoryPresenter(this, this) }
-    private val postPresenter by lazy { PostPresenter(this, this) }
-    private val geofencePresenter by lazy { GeofencePresenter(this) }
 
-    private var selectedCategory: Category? = null
-    private var location: String? = null
-    private var area: String? = null
-    private var lat: String? = null
-    private var lon: String? = null
-    private var isInside = false
+    private val vm by viewModels<PostVM>()
 
-    private var viewState: ViewState = ViewState.CATEGORY
+    override fun getLayoutResources(): Int = R.layout.activity_tambah
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tambah)
-        setToolbar()
+    override fun initViews() {
         config()
+        setToolbar()
 
-        setupView()
+        btn_upload?.setOnClickListener {
+            imageChoser.imageChoserDialog("Pilih gambar yang akan dilaporkan")
+        }
+
+        btn_maps?.setOnClickListener {
+            startActivityForResult(Intent(this, LocationPickerActivity::class.java), 616)
+        }
+
+        btn_category?.setOnClickListener {
+            dialogCategory.showDialog()
+        }
+
+        btn_submit?.setOnClickListener {
+
+            if (validate()) {
+                vm.post(et_caption?.text.toString(), txt_location?.text.toString())
+            }
+
+        }
+
+        radio_group_wncn?.setOnCheckedChangeListener { _, i ->
+            vm.setIsUseCN(i == R.id.radio_cn)
+        }
+
+
+    }
+
+    override fun initObservers() {
+
+        vm.area.observe(this) {
+            if (it == null) tv_geofence_status?.text = "Diluar Wilayah"
+            else tv_geofence_status?.text = "Wilayah $it"
+        }
+
+        vm.categories.observe(this) {
+            dialogCategory.updateList(it)
+        }
+
+        vm.selectedCategory.observe(this) {
+            tv_category?.text = it.name
+        }
+
+        vm.posted.observe(this) { onBackPressed() }
+    }
+
+    override fun initData() {
 
     }
 
@@ -73,28 +102,8 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
     private fun validate(): Boolean {
 
-        if (location == null) {
-            snackbar(root, "Pilih Lokasi!")
-            return false
-        }
-
-        if (selectedCategory == null) {
-            snackbar(root, "Pilih Kategori!")
-            return false
-        }
-
-        if (compressedImageFile == null) {
-            snackbar(root, "Pilih Gambar!")
-            return false
-        }
-
         if (et_caption?.text.toString().isEmpty()) {
             snackbar(root, "Isi Laporan ANda!")
-            return false
-        }
-
-        if (!isInside) {
-            snackbar(root, "Anda di Luar Wilayah!")
             return false
         }
 
@@ -106,150 +115,13 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
         return super.onSupportNavigateUp()
     }
 
-    override fun onSelectedCategory(category: Category) {
-        selectedCategory = category
-        tv_category?.text = category.name
+    override fun onSelectedCategory(category: CategoryModel) {
+        vm.selectCategory(category)
         dialogCategory.dismissDialog()
     }
 
     override fun onSaveCategory(name: String) {
-        viewState = ViewState.CATEGORY
-        categoryPresenter.addCategory(name)
-    }
-
-
-    override fun setupView() {
-
-        btn_upload?.setOnClickListener {
-            imageChoser.imageChoserDialog("Pilih gambar yang akan dilaporkan")
-        }
-
-        btn_maps?.setOnClickListener {
-            startActivityForResult(Intent(this, LocationPickerActivity::class.java), 616)
-        }
-
-        btn_category?.setOnClickListener {
-            viewState = ViewState.CATEGORY
-            categoryPresenter.getCategories()
-            dialogCategory.showDialog()
-        }
-
-        btn_submit?.setOnClickListener {
-
-            if (validate()) {
-                viewState = ViewState.POST
-                postPresenter.newPost(
-                    lat!!,
-                    lon!!,
-                    location!!,
-                    selectedCategory!!.id,
-                    et_caption?.text.toString(),
-                    area.toString(),
-                    compressedImageFile!!
-                )
-
-            }
-
-        }
-
-    }
-
-    override var networkState: NetworkingState by Delegates.observable<NetworkingState>(
-        NetworkingState.Create()
-    ) { _, _, newValue ->
-        when (newValue) {
-            is NetworkingState.ShowLoading -> showLoading(newValue.status)
-            is NetworkingState.ResponseSuccess<*> -> requestSuccess(newValue.respon)
-            is NetworkingState.ResponseFailure -> requestFailure(newValue.respon)
-        }
-    }
-
-
-    override fun showLoading(status: Boolean) {
-        runOnUiThread {
-            when (viewState) {
-                ViewState.CATEGORY -> {
-                    dialogCategory.showLoading(status)
-                }
-                ViewState.POST -> {
-                    if (status) {
-                        loading?.visible()
-                        btn_submit?.gone()
-                    } else {
-                        loading?.gone()
-                        btn_submit?.visible()
-                    }
-                }
-
-                ViewState.GEOFENCE -> {
-                    if (status) {
-                        loading_geofence?.visible()
-                        img_geo_status?.gone()
-                        tv_geofence_status?.text = "Menghitung geofence..."
-                    } else {
-                        loading_geofence?.gone()
-                        img_geo_status?.visible()
-                    }
-                }
-            }
-
-        }
-    }
-
-    override fun requestSuccess(response: Any?) {
-        runOnUiThread {
-            if (response is Pair<*, *>) {
-                when (response.first) {
-
-                    "get_category" -> {
-                        val data = Gson().fromJson(
-                            response.second.toString(),
-                            CategoryResponse::class.java
-                        )
-                        dialogCategory.updateList(data.categories)
-                    }
-
-                    "add_category" -> {
-                        val data = Gson().fromJson(response.second.toString(), Category::class.java)
-                        onSelectedCategory(data)
-                        dialogCategory.dismissDialog()
-                    }
-
-                    "new_post" -> {
-                        setResult(Activity.RESULT_OK)
-                        onBackPressed()
-                    }
-
-                    "geofence" -> {
-                        isInside = true
-                        img_geo_status?.setImageResource(R.drawable.ic_check)
-                        val data = response.second.toString()
-                        tv_geofence_status?.text = "Anda di wilayah $data"
-                        area = data
-                    }
-
-                }
-            }
-        }
-    }
-
-    private fun isCN() = radio_cn?.isChecked ?: true
-
-    override fun requestFailure(response: String?) {
-        runOnUiThread {
-
-            if (response.toString().contains("[401]")) Router.logOut(this)
-            else if (response.toString().contains("[geofence]")) {
-                toast(response.toString().replace("[geofence]", ""))
-                img_geo_status?.setImageResource(R.drawable.ic_error)
-                tv_geofence_status?.text = "Anda diluar wilayah"
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        networkState = NetworkingState.Destroy()
+        vm.addCategory(name)
     }
 
 
@@ -264,23 +136,14 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                 data?.let {
 
                     if (it.hasExtra("address")) {
-                        location = it.getStringExtra("address")
-                        lat = it.getDoubleExtra("lat", 0.0).toString()
-                        lon = it.getDoubleExtra("lon", 0.0).toString()
-
-                        if (lat!!.length > 15) lat = lat?.substring(0, 14)
-                        if (lon!!.length > 15) lon = lon?.substring(0, 14)
+                        val location = it.getStringExtra("address")
+                        val lat = it.getDoubleExtra("lat", 0.0)
+                        val lon = it.getDoubleExtra("lon", 0.0)
 
                         txt_location?.text = "$location"
 
                         v_geofence_status?.visible()
-                        viewState = ViewState.GEOFENCE
-                        isInside = false
-                        geofencePresenter.checkGeofenceUsingWNCN(
-                            lat!!.toDouble(),
-                            lon!!.toDouble(),
-                            isCN()
-                        )
+                        vm.setLocation(LatLng(lat, lon))
 
                     }
                 }
@@ -338,10 +201,8 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                     img_report.setImageBitmap(resource)
 
                     val path =
-                        Environment.getExternalStorageDirectory().toString() +
-                                ImageChoser.PATH + File.separator + "capture.jpg"
+                        getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + File.pathSeparator + "${UUID.randomUUID()}.jpg"
 
-                    toast(path)
 
                     resource.compress(
                         Bitmap.CompressFormat.JPEG,
@@ -351,7 +212,7 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
 
                     val out = File(path)
 
-                    compressedImageFile = out
+                    vm.setUpPhoto(out)
 
                     v_instruct_add?.gone()
                     v_instruct_change?.visible()
@@ -369,13 +230,6 @@ class PostActivity : AppCompatActivity(), CategoryListener, IView, ViewNetworkSt
                 e.printStackTrace()
             }
         }
-    }
-
-
-    private enum class ViewState {
-        CATEGORY,
-        POST,
-        GEOFENCE
     }
 
 

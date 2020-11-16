@@ -70,18 +70,6 @@
                                 android:orientation="horizontal"
                                 android:visibility="gone">
 
-                            <ProgressBar
-                                    android:id="@+id/loading_geofence"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp" />
-
-                            <ImageView
-                                    android:id="@+id/img_geo_status"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:src="@drawable/ic_check"
-                                    android:visibility="gone" />
-
                             <TextView
                                     android:id="@+id/tv_geofence_status"
                                     android:layout_width="match_parent"

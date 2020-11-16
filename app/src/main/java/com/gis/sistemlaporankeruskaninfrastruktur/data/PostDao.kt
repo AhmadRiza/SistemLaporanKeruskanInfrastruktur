@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.gis.sistemlaporankeruskaninfrastruktur.model.post.Post
 
 /**
  * Created by riza@deliv.co.id on 11/11/20.
@@ -15,7 +14,7 @@ import com.gis.sistemlaporankeruskaninfrastruktur.model.post.Post
 abstract class PostDao {
 
     @Insert
-    abstract suspend fun insertPos(post: Post): Long
+    abstract suspend fun insertPos(post: PostModel): Long
 
     @Transaction
     @Query("SELECT * FROM PostModel")
