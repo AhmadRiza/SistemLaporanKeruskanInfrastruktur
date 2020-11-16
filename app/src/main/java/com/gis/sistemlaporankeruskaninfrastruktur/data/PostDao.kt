@@ -27,10 +27,13 @@ abstract class PostDao {
     abstract suspend fun unlikePost(postId: Int)
 
     @Insert
-    abstract suspend fun insertCategory(categoryModel: CategoryModel)
+    abstract suspend fun insertCategory(categoryModel: CategoryModel): Long
 
     @Query("SELECT * FROM CategoryModel WHERE deleted = 0")
     abstract fun getAllCategory(): LiveData<List<CategoryModel>>
+
+    @Query("SELECT * FROM CategoryModel WHERE categoryId = :id")
+    abstract suspend fun getCategory(id: Int): CategoryModel?
 
 
     @Query("UPDATE CategoryModel SET deleted = 1 WHERE categoryId = :id")

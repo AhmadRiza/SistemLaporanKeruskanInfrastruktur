@@ -69,7 +69,7 @@ class PostVM(application: Application) : BaseViewModel(application) {
             CategoryModel(
                 name = name
             )
-        )
+        )?.let { selectCategory(it) }
     }
 
     fun deleteCategory(id: Int) = viewModelScope.launch {
@@ -78,6 +78,7 @@ class PostVM(application: Application) : BaseViewModel(application) {
 
     fun post(caption: String, address: String) = viewModelScope.launch {
 
+        val area = area.value ?: return@launch
         val loc = location ?: return@launch
         val selectedCategory = selectedCategory.value ?: return@launch
         val img = photo?.toString() ?: return@launch
@@ -89,7 +90,7 @@ class PostVM(application: Application) : BaseViewModel(application) {
                 lat = loc.latitude,
                 userName = repository.getUser()?.nama.toString(),
                 categoryId = selectedCategory.categoryId,
-                area = area.value.toString(),
+                area = area,
                 caption = caption,
                 date = Date(),
                 img = img,

@@ -35,8 +35,14 @@ class AppRepository(
 
     suspend fun unlikePost(id: Int) = roomUpdate { db.unlikePost(id) }
 
-    suspend fun addCategory(categoryModel: CategoryModel) =
-        roomUpdate { db.insertCategory(categoryModel) }
+    suspend fun addCategory(categoryModel: CategoryModel): CategoryModel? {
+        var category: CategoryModel? = null
+        roomUpdate {
+            val id = db.insertCategory(categoryModel).toInt()
+            category = db.getCategory(id)
+        }
+        return category
+    }
 
     suspend fun deleteCategory(id: Int) = roomUpdate { db.deleteCategory(id) }
 

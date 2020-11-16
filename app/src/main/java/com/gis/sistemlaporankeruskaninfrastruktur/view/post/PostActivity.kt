@@ -122,6 +122,7 @@ class PostActivity : MyBaseActivity(), CategoryListener {
 
     override fun onSaveCategory(name: String) {
         vm.addCategory(name)
+        dialogCategory.dismissDialog()
     }
 
 

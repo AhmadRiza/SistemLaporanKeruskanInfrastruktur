@@ -21,13 +21,15 @@ import kotlinx.android.synthetic.main.dialog_kategori.*
 
 class DialogCategory(private var activity: Activity, private val callback: CategoryListener) {
 
+    private val categories = arrayListOf<CategoryModel>()
+
     private var adapterCategory: Adapter<CategoryModel, CategoryVH>
 
     init {
         adapterCategory = object : Adapter<CategoryModel, CategoryVH>(
             R.layout.item_category,
             CategoryVH::class.java, CategoryModel::class.java,
-            arrayListOf()
+            categories
         ) {
             override fun bindView(holder: CategoryVH, model: CategoryModel?, position: Int) {
                 holder.bind(model, callback)
@@ -79,10 +81,9 @@ class DialogCategory(private var activity: Activity, private val callback: Categ
     }
 
     fun updateList(data: List<CategoryModel>) {
-        adapterCategory.updateListData(data)
-        dialog?.rv_category?.apply {
-            adapter = adapterCategory
-        }
+        categories.clear()
+        categories.addAll(data)
+        adapterCategory.notifyDataSetChanged()
     }
 
     fun showDialog() {
@@ -103,7 +104,7 @@ class DialogCategory(private var activity: Activity, private val callback: Categ
 
     private fun resetView() {
         dialog?.et_category?.setText("")
-        adapterCategory.clearData()
+//        adapterCategory.clearData()
         viewAddCategory(false)
     }
 
